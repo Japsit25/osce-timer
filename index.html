@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>OSCE Timer</title>
+    <meta name="theme-color" content="#1689ee" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icons/icon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <link rel="preload" href="fonts/FC_Minimal_Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous" />
+    <link rel="preload" href="fonts/FC_Minimal_Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">ตั้งค่า</p>
+          <h1>OSCE Timer</h1>
+        </div>
+        <div class="header-buttons">
+          <button id="fullscreenButton" class="ghost-button" type="button" title="เต็มหน้าจอ">⛶ <span>เต็มจอ</span></button>
+          <button id="resetButton" class="ghost-button" type="button" title="คืนค่าเริ่มต้น">↻ <span>คืนค่า</span></button>
+        </div>
+      </header>
+
+      <section class="settings" aria-labelledby="settingsHeading">
+        <h2 id="settingsHeading" class="sr-only">ตั้งค่าการจับเวลา</h2>
+        <div class="station-setting">
+          <label for="stationCount">จำนวนสถานี</label>
+          <input id="stationCount" type="number" min="1" max="999" value="1" inputmode="numeric" />
+          <p>กำหนดจำนวนรอบของการจับเวลา</p>
+        </div>
+
+        <div class="time-settings">
+          <div class="settings-title">
+            <h2>ตั้งค่าเวลา</h2>
+            <p>ระบุเวลาในแต่ละสถานี</p>
+          </div>
+          <fieldset class="time-row" id="endTimeGroup">
+            <legend>หมดเวลา</legend>
+            <div class="time-inputs">
+              <label>ชั่วโมง<input id="endHours" type="number" min="0" max="99" value="0" /></label>
+              <label>นาที<input id="endMinutes" type="number" min="0" max="59" value="5" /></label>
+              <label>วินาที<input id="endSeconds" type="number" min="0" max="59" value="0" /></label>
+            </div>
+          </fieldset>
+          <fieldset class="time-row" id="warningTimeGroup">
+            <legend>เตือนเวลา</legend>
+            <div class="time-inputs">
+              <label>ชั่วโมง<input id="warningHours" type="number" min="0" max="99" value="0" /></label>
+              <label>นาที<input id="warningMinutes" type="number" min="0" max="59" value="4" /></label>
+              <label>วินาที<input id="warningSeconds" type="number" min="0" max="59" value="30" /></label>
+            </div>
+            <p class="validation-message" id="validationMessage" role="alert"></p>
+          </fieldset>
+        </div>
+
+        <div class="controls" aria-label="ปุ่มควบคุม">
+          <button id="startButton" class="control-button start" type="button"><span>▶</span> เริ่ม</button>
+          <button id="pauseButton" class="control-button pause" type="button" disabled><span>Ⅱ</span> หยุดชั่วคราว</button>
+          <button id="stopButton" class="control-button stop" type="button" disabled><span>■</span> หยุด</button>
+        </div>
+      </section>
+
+      <section class="results" aria-labelledby="resultsHeading">
+        <div class="section-title"><h2 id="resultsHeading">แสดงผล</h2><span aria-hidden="true">⏱</span></div>
+        <div class="timer-grid">
+          <article class="result-card station-card">
+            <h3>สถานีที่</h3>
+            <div class="display station-display"><span id="currentStation">—</span></div>
+            <h3>สถานีทั้งหมด</h3>
+            <div class="display station-display"><span id="stationsRemaining">—</span></div>
+          </article>
+          <article class="result-card clock-card">
+            <h3>เวลาที่เหลือ</h3>
+            <div class="display clock-display" id="currentTime" aria-live="polite">00:00:00</div>
+            <h3>เวลาที่เหลือทั้งหมด</h3>
+            <div class="display clock-display" id="totalTime">00:00:00</div>
+          </article>
+        </div>
+      </section>
+
+      <section class="sound-check" aria-labelledby="soundHeading">
+        <div class="section-title"><h2 id="soundHeading">เสียงฉุกเฉิน</h2><span aria-hidden="true">🎧</span></div>
+        <p>ทดสอบเสียงได้โดยไม่มีผลต่อการนับถอยหลัง</p>
+        <div class="sound-buttons">
+          <button data-sound="warning" type="button">▷ เสียงเตือน</button>
+          <button data-sound="longBell" type="button">▷ กริ่งยาว</button>
+          <button data-sound="finish" type="button">▷ กริ่งหมดเวลา</button>
+        </div>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
