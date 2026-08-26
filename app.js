@@ -10,6 +10,7 @@ const sounds = {
 const state = { running: false, paused: false, transitioning: false, finished: false, finishing: false, station: 0, endAt: 0, pausedRemaining: 0, warningPlayed: false, timer: null };
 let wakeLock = null;
 let audioUnlocked = false;
+let stationToken = 0;
 
 function seconds(prefix) {
   return (+$(prefix + "Hours").value || 0) * 3600 + (+$(prefix + "Minutes").value || 0) * 60 + (+$(prefix + "Seconds").value || 0);
@@ -26,13 +27,14 @@ function unlockAllAudio() {
   if (audioUnlocked) return;
   audioUnlocked = true;
   Object.values(sounds).forEach(audio => {
-    const previousVolume = audio.volume;
-    audio.volume = 0;
-    audio.play().then(() => {
-      audio.pause();
-      audio.currentTime = 0;
-      audio.volume = previousVolume;
-    }).catch(() => { audio.volume = previousVolume; });
+    audio.muted = true;
+    const playPromise = audio.play();
+    // Pause synchronously (not inside .then()) so the mute/unmute happens
+    // before any later real play() call on the same element can race it.
+    if (playPromise && playPromise.catch) playPromise.catch(() => {});
+    audio.pause();
+    audio.currentTime = 0;
+    audio.muted = false;
   });
 }
 function play(sound, retry = true) {
@@ -142,9 +144,12 @@ async function completeSession() {
 }
 async function beginStation() {
   if (!state.running) return;
+  const token = ++stationToken;
   state.transitioning = true; updateDisplay(); setControls();
   await playAndWait("longBell");
-  if (!state.running) return;
+  // If stop/reset/another beginStation happened while we were waiting for the
+  // bell, this call is stale — bail out instead of overwriting newer state.
+  if (!state.running || token !== stationToken) return;
   state.transitioning = false; state.warningPlayed = false; state.endAt = Date.now() + seconds("end") * 1000;
   state.timer = setInterval(tick, 200); updateDisplay(); setControls();
 }
@@ -171,6 +176,7 @@ function pauseOrResume() {
   updateDisplay(); setControls();
 }
 function stop() {
+  stationToken++;
   clearInterval(state.timer); silenceAllAudio(); Object.assign(state, { running:false, paused:false, transitioning:false, finished:false, finishing:false, station:0, pausedRemaining:0, timer:null }); updateDisplay(); setControls(); releaseWakeLock();
 }
 function reset() {
