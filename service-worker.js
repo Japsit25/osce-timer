@@ -1,4 +1,4 @@
-const CACHE_NAME = "osce-timer-v4";
+const CACHE_NAME = "osce-timer-v5";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -16,7 +16,20 @@ const APP_FILES = [
 ];
 
 self.addEventListener("install", event => {
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_FILES)));
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache =>
+      Promise.all(
+        APP_FILES.map(url =>
+          fetch(url).then(response => {
+            if (!response.ok) throw new Error(url + " -> " + response.status);
+            return cache.put(url, response);
+          }).catch(err => {
+            console.warn("[service-worker] cache failed for", url, err);
+          })
+        )
+      )
+    )
+  );
   self.skipWaiting();
 });
 
