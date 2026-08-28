@@ -48,15 +48,18 @@
               <label>วินาที<input id="endSeconds" type="number" min="0" max="59" value="0" /></label>
             </div>
           </fieldset>
-          <fieldset class="time-row" id="warningTimeGroup">
-            <legend>เตือนเวลา</legend>
-            <div class="time-inputs">
-              <label>ชั่วโมง<input id="warningHours" type="number" min="0" max="99" value="0" /></label>
-              <label>นาที<input id="warningMinutes" type="number" min="0" max="59" value="4" /></label>
-              <label>วินาที<input id="warningSeconds" type="number" min="0" max="59" value="30" /></label>
-            </div>
+          <div id="warningTimesContainer" aria-label="ตั้งค่าเวลาเตือน">
+            <fieldset class="time-row warning-time-row" id="warningTimeGroup" data-warning-index="0">
+              <legend>เตือนเวลา 1</legend>
+              <div class="time-inputs">
+                <label>ชั่วโมง<input id="warningHours" type="number" min="0" max="99" value="0" /></label>
+                <label>นาที<input id="warningMinutes" type="number" min="0" max="59" value="4" /></label>
+                <label>วินาที<input id="warningSeconds" type="number" min="0" max="59" value="30" /></label>
+              </div>
+              <button class="warning-add-button" id="addWarningButton" type="button" title="เพิ่มเวลาเตือน" aria-label="เพิ่มเวลาเตือน">+</button>
+            </fieldset>
             <p class="validation-message" id="validationMessage" role="alert"></p>
-          </fieldset>
+          </div>
         </div>
 
         <div class="controls" aria-label="ปุ่มควบคุม">

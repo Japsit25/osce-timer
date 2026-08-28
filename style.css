@@ -17,3 +17,53 @@ button, input { font: inherit; }
 @media (max-width: 850px) { .settings { grid-template-columns:1fr; gap:12px; padding:12px 24px; }.controls { flex-direction:row; flex-wrap:wrap; }.control-button { flex:1 1 145px; text-align:center; }.station-setting input { width:100%; max-width:250px; height:44px; }.time-row legend { float:none; width:auto; padding:0 0 6px; text-align:left; }.validation-message { margin-left:0; }.timer-grid { grid-template-columns:1fr; gap:12px; } }
 @media (max-width: 530px) { .app-header, .settings, .sound-check { padding-left:18px; padding-right:18px; }.settings-title { display:block; }.time-inputs { gap:7px; }.time-inputs input { width:calc((100vw - 72px)/3); height:44px; }.sound-buttons { flex-direction:column; gap:10px; }.sound-buttons button { width:100%; }.results { padding:12px 18px; } }
 @media (max-height: 700px) { .app-header { padding:10px 24px; }.eyebrow { display:none; }.app-header h1 { font-size:1.3rem; }.settings { padding:10px 24px; }.station-setting > label { font-size:1.1rem; margin-bottom:4px; }.station-setting input { height:44px; font-size:1.4rem; }.settings-title h2 { font-size:1.1rem; }.time-row legend { padding-top:15px; }.time-inputs input { height:40px; font-size:1.2rem; }.control-button { padding:8px 11px; }.sound-check { padding:8px 24px; }.sound-check p { display:none; }.sound-buttons { margin-top:6px; } }
+
+
+/* Multiple warning times */
+#warningTimesContainer { position: relative; }
+.warning-time-row { position: relative; padding-right: 54px; }
+.warning-time-row .warning-add-button,
+.warning-time-row .warning-remove-button {
+  position: absolute;
+  right: 2px;
+  top: 25px;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 10px;
+  color: #fff;
+  background: #1689ee;
+  font-size: 1.8rem;
+  line-height: 1;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 2px 0 rgba(0,0,0,.12);
+}
+.warning-time-row .warning-add-button:hover { background: #0b6fca; }
+.warning-time-row .warning-add-button:disabled,
+.warning-time-row .warning-remove-button:disabled { cursor: not-allowed; opacity: .42; }
+.warning-time-row .warning-remove-button {
+  background: #bc4b4b;
+  font-size: 1.7rem;
+}
+.warning-time-row .warning-remove-button:hover { background: #9e3e3e; }
+#warningTimesContainer .validation-message { margin-bottom: 0; }
+
+@media (max-width: 850px) {
+  .warning-time-row { padding-right: 0; }
+  .warning-time-row .warning-add-button,
+  .warning-time-row .warning-remove-button {
+    top: 0;
+    right: 0;
+    width: 36px;
+    height: 36px;
+  }
+}
+@media (max-width: 530px) {
+  .warning-time-row { padding-right: 44px; }
+  .warning-time-row .warning-add-button,
+  .warning-time-row .warning-remove-button {
+    top: 0;
+    right: 0;
+  }
+}

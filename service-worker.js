@@ -1,4 +1,4 @@
-const CACHE_NAME = "osce-timer-v5";
+const CACHE_NAME = "osce-timer-v6";
 const APP_FILES = [
   "./",
   "./index.html",
