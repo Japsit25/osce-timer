@@ -388,11 +388,20 @@ function addWarningTime() {
   row.querySelector("input")?.focus();
 }
 
+function updateResponsiveScale() {
+  // When extra warning rows are added, shrink the complete UI as one unit
+  // so the setup area and timer displays stay visually balanced.
+  const count = getWarningRows().length;
+  document.documentElement.dataset.warningCount = String(count);
+}
+
 function renumberWarningRows() {
   getWarningRows().forEach((row, index) => {
     row.dataset.warningIndex = String(index);
     row.querySelector("legend").textContent = `เตือนเวลา ${index + 1}`;
   });
+
+  updateResponsiveScale();
 
   const addButton = $("addWarningButton");
   if (addButton) addButton.disabled = state.running || state.finishing || getWarningRows().length >= MAX_WARNINGS;
@@ -428,6 +437,7 @@ document.querySelectorAll("[data-sound]").forEach(button => {
 });
 
 validSettings();
+renumberWarningRows();
 updateDisplay();
 setControls();
 
